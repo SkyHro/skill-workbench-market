@@ -1,6 +1,6 @@
 # Skill 工作台插件市场
 
-打开工作台的「插件市场」即可搜索、查看详情和安装。工作台选择已上架版本中适用于当前客户端的最高版本。[公网目录](https://skyhro.github.io/skill-workbench-market/index.json)
+在[市场首页](https://skyhro.github.io/skill-workbench-market/)点击插件可查看介绍、发布者和兼容版本。打开工作台的「插件市场」即可搜索、查看详情和安装。工作台选择已上架版本中适用于当前客户端的最高版本。[公网目录](https://skyhro.github.io/skill-workbench-market/index.json)
 
 ## 下载客户端
 

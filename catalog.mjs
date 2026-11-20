@@ -1,6 +1,7 @@
 import { readFile, readdir, mkdir, writeFile, copyFile, lstat, mkdtemp, rename, rm } from "node:fs/promises";
 import { createHash } from "node:crypto";
 import { validatePlugin, parseEngines } from "@skill-workbench/plugin-sdk";
+import { writeMarketPages } from "./market-pages.mjs";
 import assert from "node:assert/strict";
 
 const digest = bytes => createHash("sha256").update(bytes).digest("hex");
@@ -81,7 +82,7 @@ try {
   const json=JSON.stringify({schemaVersion:1,plugins,previousReleases});
   assert.ok(Buffer.byteLength(json)<=4*1024*1024 && plugins.length<=5000 && previousReleases.length<=10000,"目录超过客户端容量");
   await writeFile(out+"/index.json",json);
-  await writeFile(out+"/index.html",await readFile("index.html"));
+  await writeMarketPages(out, plugins);
   await copyFile("sdk/skill-workbench-plugin-sdk-2.1.0.tgz",out+"/skill-workbench-plugin-sdk-2.1.0.tgz");
   await writeFile(out+"/.nojekyll","");
   await rm("_site",{recursive:true,force:true});
