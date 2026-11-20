@@ -1,0 +1,34 @@
+:root {
+  color-scheme: light dark;
+  --ink: #152d30; --muted: #52696c; --accent: #00665f;
+  --bg: #fff; --line: #ccdad8; --tint: #edf6f4;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --ink: #e8f4f3; --muted: #acbfbe; --accent: #83d9cb; --bg: #192629; --line: #3b5154; --tint: #233638; }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 1rem/1.65 system-ui, sans-serif; }
+main { max-width: 62rem; margin: 0 auto; padding: clamp(2rem,7vw,5rem) clamp(1rem,5vw,3.5rem); overflow-wrap: anywhere; }
+header, .download-row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+h1, h2, h3, p { margin: 0; }
+h1 { font-size: clamp(1.85rem,4vw,2.65rem); line-height: 1.2; letter-spacing: -.035em; }
+h2 { font-size: 1.2rem; }
+h3 { font-size: 1.05rem; }
+a { color: var(--accent); text-underline-offset: .18em; }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.intro { margin: .9rem 0 1.4rem; color: var(--muted); }
+.download-row { justify-content: flex-start; margin-bottom: 2.75rem; }
+.download { padding: .6rem 1rem; border-radius: .5rem; color: var(--bg); background: var(--accent); font-weight: 650; text-decoration: none; }
+small, dt, .description, .meta { color: var(--muted); }
+small, .meta { font-size: .875rem; }
+.catalog { list-style: none; padding: 0; margin: .75rem 0; border-top: 1px solid var(--line); }
+.catalog li { border-bottom: 1px solid var(--line); }
+.plugin { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: .2rem 1rem; padding: 1.1rem .75rem; color: var(--ink); text-decoration: none; }
+.plugin:hover, .plugin:focus-visible { background: var(--tint); }
+.plugin h3 { color: var(--accent); }
+.plugin .meta, .description { grid-column: 1; }
+.arrow { grid-column: 2; grid-row: 1 / 4; align-self: center; color: var(--accent); font-size: 1.5rem; }
+.back { display: inline-block; margin-bottom: 2rem; }
+.detail { max-width: 52rem; }
+dl { display: grid; grid-template-columns: auto minmax(0,1fr); gap: .55rem 1.5rem; padding: 1.2rem 0; border-block: 1px solid var(--line); margin: 1.5rem 0; }
+dd { margin: 0; }

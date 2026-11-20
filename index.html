@@ -4,30 +4,25 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Skill 工作台插件市场</title>
-  <style>
-    html { color-scheme: light dark; }
-    body { max-width: 42rem; margin: 14vh auto; padding: 0 1.5rem; font: 1rem/1.75 system-ui; }
-    h1 { line-height: 1.25; }
-    a { color: inherit; }
-    .download {
-      display: inline-block; margin-top: .5rem; padding: .55rem 1rem; border-radius: .5rem;
-      background: #00665f; color: white; font-weight: 600; text-decoration: none;
-    }
-    .download:hover { background: #004f49; }
-    .download:focus-visible { outline: 2px solid currentColor; outline-offset: -5px; }
-    .release { margin: .5rem 0 2rem; font-size: .9rem; }
-  </style>
+  <link rel="stylesheet" href="market.css">
 </head>
 <body>
   <main>
-    <h1>Skill 工作台插件市场</h1>
-    <p>在客户端打开「插件市场」，选择插件即可查看详情和安装兼容版本。</p>
-    <a class="download" href="https://github.com/SkyHro/skill-workbench-market/releases/download/client-v0.1.0/skill-workbench-0.1.0-macos-arm64.zip">下载 macOS 客户端</a>
-    <p class="release">Apple 芯片 · 0.1.0 预览版 · ZIP，124 MiB<br>
-      <a href="https://github.com/SkyHro/skill-workbench-market/releases/tag/client-v0.1.0">发行说明与 SHA-256 校验文件</a>
-    </p>
-    <p><a href="https://github.com/SkyHro/skill-workbench-market#提交插件">作者上架指南</a> ·
-      <a href="index.json">市场目录 JSON</a></p>
+    <header>
+      <h1>Skill 工作台插件市场</h1>
+      <a href="https://github.com/SkyHro/skill-workbench-market#提交插件">作者上架指南</a>
+    </header>
+    <p class="intro">浏览插件，查看它们在工作台中提供的功能。在客户端打开「插件市场」即可安装兼容版本。</p>
+    <div class="download-row">
+      <a class="download" href="https://github.com/SkyHro/skill-workbench-market/releases/download/client-v0.1.0/skill-workbench-0.1.0-macos-arm64.zip">下载 macOS 客户端</a>
+      <small>Apple 芯片 · 0.1.0 预览版 · ZIP，124 MiB<br>
+        <a href="https://github.com/SkyHro/skill-workbench-market/releases/tag/client-v0.1.0">发行说明与 SHA-256 校验文件</a>
+      </small>
+    </div>
+    <section aria-labelledby="list-title">
+      <h2 id="list-title">全部插件</h2>
+      <!-- plugin-list -->
+    </section>
   </main>
 </body>
 </html>
