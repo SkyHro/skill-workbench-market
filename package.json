@@ -1,0 +1,6 @@
+{
+  "name": "skill-workbench-market",
+  "private": true,
+  "scripts": {"catalog": "node catalog.mjs"},
+  "dependencies": {"@skill-workbench/plugin-sdk":"file:sdk/skill-workbench-plugin-sdk-2.1.0.tgz"}
+}

@@ -1,0 +1,51 @@
+name: Market
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  catalog:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Validate author namespace and immutable releases
+        if: github.event_name == 'pull_request' && github.event.pull_request.author_association != 'OWNER'
+        env:
+          BASE: ${{ github.event.pull_request.base.sha }}
+          HEAD: ${{ github.event.pull_request.head.sha }}
+          AUTHOR: ${{ github.event.pull_request.user.login }}
+        run: |
+          python3 - <<'PY'
+          import os,re,subprocess
+          changed=subprocess.check_output(["git","diff","--name-status","-z","--no-renames",os.environ["BASE"]+"..."+os.environ["HEAD"]]).split(b"\0")[:-1]
+          prefix="packages/"+os.environ["AUTHOR"].lower()+"."
+          if not changed or len(changed)%2: raise SystemExit("Invalid changes")
+          for status,path in zip(changed[::2],changed[1::2]):
+              name=path.decode()
+              if status!=b"A" or not name.startswith(prefix) or not re.fullmatch(r"packages/[a-z][a-z0-9.-]*-\d+\.\d+\.\d+\.json",name): raise SystemExit("Only new releases in your GitHub namespace may be submitted")
+          PY
+      - uses: actions/setup-node@v4
+        with: {node-version: '24'}
+      - run: npm ci --ignore-scripts && npm run catalog
+      - if: github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@v3
+        with: {path: _site}
+  deploy:
+    needs: catalog
+    if: github.ref == 'refs/heads/master' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    permissions: {pages: write, id-token: write}
+    concurrency: {group: github-pages, cancel-in-progress: false}
+    environment:
+      name: github-pages
+      url: ${{ steps.publish.outputs.page_url }}
+    steps:
+      - id: publish
+        uses: actions/deploy-pages@v4

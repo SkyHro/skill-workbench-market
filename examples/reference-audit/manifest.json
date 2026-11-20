@@ -1,0 +1,10 @@
+{
+  "apiVersion": 2, "engines": {"workbench": ">=0.1.0 <0.2.0"}, "kind": "extension", "trial": false,
+  "id": "example.reference-audit", "version": "1.0.0",
+  "name": "引用巡检", "publisher": "示例作者",
+  "description": "在实例详情统计文档引用，在健康诊断生成可保存的巡检摘要。",
+  "contributions": [
+    {"id":"summary","slot":"skill.detail","type":"panel","title":"引用概览"},
+    {"id":"report","slot":"diagnosis.summary","type":"markdown","title":"保存引用巡检摘要"}
+  ]
+}

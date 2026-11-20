@@ -1,0 +1,88 @@
+{
+  "id": "workbench.palettes",
+  "name": "工作台配色",
+  "description": "一套插件提供暮紫、靛蓝、陶土和森林四种配色，每种都适配浅色与深色模式。",
+  "publisher": "Skill 工作台",
+  "version": "2.0.0",
+  "apiVersion": 1,
+  "kind": "appearance.theme",
+  "trial": true,
+  "variants": [
+    {
+      "name": "暮紫",
+      "light": {
+        "bg": "#f8f3fa",
+        "panel": "#fefaff",
+        "fg": "#322537",
+        "muted": "#67536c",
+        "accent": "#783888",
+        "line": "#d7c8dc"
+      },
+      "dark": {
+        "bg": "#241c2a",
+        "panel": "#342739",
+        "fg": "#f8eefb",
+        "muted": "#d1bbd5",
+        "accent": "#e6abef",
+        "line": "#725c78"
+      }
+    },
+    {
+      "name": "靛蓝",
+      "light": {
+        "bg": "#f3f5fc",
+        "panel": "#ffffff",
+        "fg": "#202942",
+        "muted": "#535e78",
+        "accent": "#344fa4",
+        "line": "#c7cee2"
+      },
+      "dark": {
+        "bg": "#171c2c",
+        "panel": "#242b40",
+        "fg": "#f1f3ff",
+        "muted": "#b5bfd9",
+        "accent": "#a7bcff",
+        "line": "#52607c"
+      }
+    },
+    {
+      "name": "陶土",
+      "light": {
+        "bg": "#f9f4ed",
+        "panel": "#fffbf6",
+        "fg": "#372923",
+        "muted": "#705749",
+        "accent": "#934021",
+        "line": "#ddcdbf"
+      },
+      "dark": {
+        "bg": "#251e1b",
+        "panel": "#352822",
+        "fg": "#f9efe5",
+        "muted": "#d6bfb1",
+        "accent": "#ffb491",
+        "line": "#796258"
+      }
+    },
+    {
+      "name": "森林",
+      "light": {
+        "bg": "#f2f7ef",
+        "panel": "#fcfffa",
+        "fg": "#213328",
+        "muted": "#4a6350",
+        "accent": "#256043",
+        "line": "#c4d7c7"
+      },
+      "dark": {
+        "bg": "#18231a",
+        "panel": "#243329",
+        "fg": "#eaf4e8",
+        "muted": "#b6cbb8",
+        "accent": "#99dab0",
+        "line": "#506a59"
+      }
+    }
+  ]
+}
