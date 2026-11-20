@@ -1,4 +1,33 @@
-<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Skill 工作台插件市场</title><style>html{color-scheme:light dark}body{max-width:42rem;margin:14vh auto;padding:0 1.5rem;font:1rem/1.75 system-ui}a{color:inherit}h1{line-height:1.25}</style>
-<h1>Skill 工作台插件市场</h1><p>在客户端打开「插件市场」，选择插件即可查看详情和安装兼容版本。</p>
-<p><a href="https://github.com/SkyHro/skill-workbench-market#readme">作者上架指南</a> · <a href="skill-workbench-plugin-sdk-2.1.0.tgz">下载作者 SDK</a> · <a href="index.json">市场目录 JSON</a></p></html>
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Skill 工作台插件市场</title>
+  <style>
+    html { color-scheme: light dark; }
+    body { max-width: 42rem; margin: 14vh auto; padding: 0 1.5rem; font: 1rem/1.75 system-ui; }
+    h1 { line-height: 1.25; }
+    a { color: inherit; }
+    .download {
+      display: inline-block; margin-top: .5rem; padding: .55rem 1rem; border-radius: .5rem;
+      background: #00665f; color: white; font-weight: 600; text-decoration: none;
+    }
+    .download:hover { background: #004f49; }
+    .download:focus-visible { outline: 2px solid currentColor; outline-offset: -5px; }
+    .release { margin: .5rem 0 2rem; font-size: .9rem; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Skill 工作台插件市场</h1>
+    <p>在客户端打开「插件市场」，选择插件即可查看详情和安装兼容版本。</p>
+    <a class="download" href="https://github.com/SkyHro/skill-workbench-market/releases/download/client-v0.1.0/skill-workbench-0.1.0-macos-arm64.zip">下载 macOS 客户端</a>
+    <p class="release">Apple 芯片 · 0.1.0 预览版 · ZIP，124 MiB<br>
+      <a href="https://github.com/SkyHro/skill-workbench-market/releases/tag/client-v0.1.0">发行说明与 SHA-256 校验文件</a>
+    </p>
+    <p><a href="https://github.com/SkyHro/skill-workbench-market#readme">作者上架指南</a> ·
+      <a href="skill-workbench-plugin-sdk-2.1.0.tgz">下载作者 SDK</a> · <a href="index.json">市场目录 JSON</a></p>
+  </main>
+</body>
+</html>

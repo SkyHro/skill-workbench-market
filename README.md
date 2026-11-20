@@ -2,6 +2,10 @@
 
 打开工作台的「插件市场」即可搜索、查看详情和安装。工作台选择已上架版本中适用于当前客户端的最高版本。[公网目录](https://skyhro.github.io/skill-workbench-market/index.json)
 
+## 下载客户端
+
+从[市场首页](https://skyhro.github.io/skill-workbench-market/)下载适用于 Apple 芯片的 macOS 客户端。公开发行页提供版本说明及 ZIP 的 SHA-256 校验文件。
+
 ## 提交插件
 
 1. Fork 此仓库。下载 [SDK 2.1](https://skyhro.github.io/skill-workbench-market/skill-workbench-plugin-sdk-2.1.0.tgz)，在自己的 Node.js 24 项目执行 `npm install --save-dev ./skill-workbench-plugin-sdk-2.1.0.tgz`。可从 [引用巡检示例](examples/reference-audit/) 开始。
