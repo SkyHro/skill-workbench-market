@@ -1,0 +1,22 @@
+{
+  "apiVersion": 2,
+  "kind": "extension",
+  "trial": false,
+  "engines": {
+    "workbench": ">=0.1.0 <0.2.0"
+  },
+  "id": "skyhro.dependency-summary",
+  "version": "1.0.0",
+  "name": "依赖清单",
+  "publisher": "SkyHro",
+  "description": "在安装实例详情中列出当前 Skill 声明的依赖，自动去重并按名称排序。",
+  "contributions": [
+    {
+      "id": "dependencies",
+      "slot": "skill.detail",
+      "type": "panel",
+      "title": "声明的依赖"
+    }
+  ],
+  "source": "function activate({ skill }) {\n  const names = [...new Set(skill.dependencies)].sort();\n  return names.length ? names.join(\"\\n\") : \"当前 Skill 没有声明依赖。\";\n}"
+}
