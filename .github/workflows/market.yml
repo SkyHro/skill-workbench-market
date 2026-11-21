@@ -5,6 +5,24 @@ on:
   pull_request:
     branches: [master]
   workflow_dispatch:
+    inputs:
+      operation:
+        description: 操作（仅验证不修改线上状态）
+        type: choice
+        default: verify
+        options: [verify, publish-both, publish-client, publish-plugin, withdraw-client, withdraw-plugin]
+      client_version:
+        description: 客户端版本，例如 0.1.1
+        type: string
+      plugin_file:
+        description: 插件版本文件名，例如 workbench.sketch-1.1.0.json
+        type: string
+      staging_tag:
+        description: 新插件附件所在 Release 标签，仓库已收录可留空
+        type: string
+concurrency:
+  group: market-${{ github.event_name == 'pull_request' && github.ref || 'production' }}
+  cancel-in-progress: false
 permissions:
   contents: read
 jobs:
@@ -33,19 +51,67 @@ jobs:
           PY
       - uses: actions/setup-node@v4
         with: {node-version: '24'}
-      - run: npm ci --ignore-scripts && npm run catalog
-      - if: github.event_name != 'pull_request'
-        uses: actions/upload-pages-artifact@v3
-        with: {path: _site}
-  deploy:
+      - run: npm ci --ignore-scripts && node --test admin/manage.test.mjs && npm run catalog
+  production:
     needs: catalog
     if: github.ref == 'refs/heads/master' && github.event_name != 'pull_request'
     runs-on: ubuntu-latest
-    permissions: {pages: write, id-token: write}
-    concurrency: {group: github-pages, cancel-in-progress: false}
+    timeout-minutes: 15
     environment:
       name: github-pages
-      url: ${{ steps.publish.outputs.page_url }}
+      url: https://skyhro.github.io/skill-workbench-market/
+    permissions: {contents: write, pages: write, id-token: write}
+    env:
+      GH_TOKEN: ${{ github.token }}
+      OPERATION: ${{ inputs.operation || 'verify' }}
+      CLIENT_VERSION: ${{ inputs.client_version }}
+      PLUGIN_FILE: ${{ inputs.plugin_file }}
+      STAGING_TAG: ${{ inputs.staging_tag }}
     steps:
-      - id: publish
-        uses: actions/deploy-pages@v4
+      - uses: actions/checkout@v4
+        with:
+          ref: master
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with: {node-version: '24'}
+      - name: Check administrator permission
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          for actor in "$GITHUB_ACTOR" "$GITHUB_TRIGGERING_ACTOR"; do
+            test "$(gh api "repos/$GITHUB_REPOSITORY/collaborators/$actor/permission" --jq .permission)" = admin
+          done
+      - name: Read distribution state
+        run: |
+          gh auth setup-git
+          git init -q -b market-state .market-state
+          git -C .market-state remote add origin "https://github.com/$GITHUB_REPOSITORY.git"
+          git -C .market-state ls-remote --heads origin refs/heads/market-state > "$RUNNER_TEMP/state-ref"
+          if test -s "$RUNNER_TEMP/state-ref"; then
+            git -C .market-state fetch --depth=1 origin refs/heads/market-state
+            git -C .market-state reset --keep FETCH_HEAD
+          fi
+      - name: Validate inputs, client and complete candidate catalog
+        run: |
+          npm ci --ignore-scripts
+          node admin/manage.mjs prepare
+          node admin/manage.mjs materialize
+          npm run catalog
+      - name: Publish validated client and record changes
+        if: github.event_name == 'workflow_dispatch' && inputs.operation != 'verify'
+        run: |
+          node admin/manage.mjs publish-client
+          git -C .market-state add --all
+          if ! git -C .market-state diff --cached --quiet; then
+            git -C .market-state -c user.name=market-admin -c user.email=github-actions[bot]@users.noreply.github.com commit -m "Market $OPERATION by $GITHUB_ACTOR (run $GITHUB_RUN_ID)"
+            git -C .market-state push origin HEAD:refs/heads/market-state
+          fi
+      - uses: actions/upload-pages-artifact@v3
+        if: github.event_name == 'push' || inputs.operation != 'verify'
+        with: {path: _site}
+      - uses: actions/deploy-pages@v4
+        if: github.event_name == 'push' || inputs.operation != 'verify'
+      - name: Withdraw client release after updating the homepage
+        if: inputs.operation == 'withdraw-client'
+        run: node admin/manage.mjs withdraw-client
+      - name: Verify live catalog, packages and client archive
+        run: node admin/manage.mjs verify

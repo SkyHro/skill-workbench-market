@@ -1,4 +1,5 @@
 import { copyFile, mkdir, readFile, writeFile } from "node:fs/promises";
+import { existsSync } from "node:fs";
 import { legacyWorkbenchRange } from "@skill-workbench/plugin-sdk";
 
 const labels = {
@@ -46,8 +47,16 @@ ${contributions.length ? `<h2>提供的功能</h2><ul>${contributions.join("")}<
 
 export async function writeMarketPages(out, plugins) {
   const template = await readFile("index.html", "utf8");
+  const stateFile = ".market-state/state.json";
+  const version = existsSync(stateFile) ? JSON.parse(await readFile(stateFile,"utf8")).client : "0.1.0";
+  if (version !== null && !/^\d{1,6}\.\d{1,6}\.\d{1,6}$/.test(version)) throw Error("客户端版本无效");
+  const release = "https://github.com/SkyHro/skill-workbench-market/releases";
+  const downloads = version === null ? "<p>客户端暂时停止分发。</p>" : `<div class="download-row">
+    <a class="download" href="${release}/download/client-v${version}/skill-workbench-${version}-macos-arm64.zip">下载 macOS 客户端</a>
+    <small>Apple 芯片 · ${version}<br><a href="${release}/tag/client-v${version}">发行说明与 SHA-256 校验文件</a></small>
+  </div>`;
   const list = plugins.length ? `<ul class="catalog">${plugins.map(pluginRow).join("")}</ul>` : "<p>暂无已上架插件。</p>";
-  await writeFile(out + "/index.html", template.replace("<!-- plugin-list -->", () => list));
+  await writeFile(out + "/index.html", template.replace("<!-- client-download -->", () => downloads).replace("<!-- plugin-list -->", () => list));
   await copyFile("market.css", out + "/market.css");
   await mkdir(out + "/plugins");
   for (const plugin of plugins) await writeFile(out + "/plugins/" + plugin.id + ".html", details(plugin));
