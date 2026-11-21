@@ -88,7 +88,7 @@ jobs:
           git -C .market-state ls-remote --heads origin refs/heads/market-state > "$RUNNER_TEMP/state-ref"
           if test -s "$RUNNER_TEMP/state-ref"; then
             git -C .market-state fetch --depth=1 origin refs/heads/market-state
-            git -C .market-state reset --keep FETCH_HEAD
+            git -C .market-state switch -C market-state FETCH_HEAD
           fi
       - name: Validate inputs, client and complete candidate catalog
         run: |
