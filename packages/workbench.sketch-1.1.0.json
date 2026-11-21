@@ -1,0 +1,44 @@
+{
+  "id": "workbench.sketch",
+  "name": "手绘风格",
+  "description": "为整个工作台添加纸纹、手写标题和墨线标签，沿用当前配色。",
+  "publisher": "Skill 工作台",
+  "version": "1.1.0",
+  "apiVersion": 3,
+  "kind": "appearance.style",
+  "trial": false,
+  "engines": {
+    "workbench": ">=0.1.1 <0.2.0"
+  },
+  "preset": "sketch",
+  "ink": {
+    "corners": [
+      10,
+      4,
+      9,
+      5,
+      5,
+      9,
+      4,
+      10
+    ],
+    "divider": [
+      8,
+      5,
+      3,
+      4,
+      11,
+      6,
+      5,
+      5
+    ],
+    "outline": [
+      9,
+      5,
+      3,
+      4,
+      6,
+      6
+    ]
+  }
+}

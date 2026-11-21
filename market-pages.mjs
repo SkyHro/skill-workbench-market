@@ -3,6 +3,7 @@ import { legacyWorkbenchRange } from "@skill-workbench/plugin-sdk";
 
 const labels = {
   extension: "工作台扩展",
+  "appearance.style": "界面风格",
   "appearance.theme": "主题配色",
   "report.markdown": "报告导出",
 };
@@ -39,6 +40,7 @@ function details(plugin) {
 <dl>${fields.map(([key,value]) => `<dt>${key}</dt><dd>${escapeHtml(value)}</dd>`).join("")}</dl>
 ${contributions.length ? `<h2>提供的功能</h2><ul>${contributions.join("")}</ul>` : ""}
 <p>在客户端的「插件市场」搜索「${escapeHtml(plugin.name)}」，即可查看适用于当前工作台的版本。</p>
+<a href="../${plugin.id}-${plugin.version}.json" download>下载插件包</a>
 </main></body></html>`;
 }
 

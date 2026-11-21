@@ -45,6 +45,14 @@ function entry(input, file, sha256) {
         palette(v.light); palette(v.dark);
       }
     } else { palette(p.light); palette(p.dark); }
+  } else if (kind==="appearance.style") {
+    assert.equal(apiVersion,3); assert.equal(trial,false); assert.equal(p.preset,"sketch");
+    for (const key of ["corners","divider","outline"]) {
+      const values = p.ink?.[key];
+      assert.ok(Array.isArray(values) && values.length >= 1 && values.length <= 12);
+      if (key === "corners") assert.equal(values.length,8);
+      assert.ok(values.every(n => Number.isInteger(n) && n >= 1 && n <= 32));
+    }
   } else if (kind==="report.markdown") {
     assert.equal(apiVersion,1); assert.equal(trial,false);
     for (const key of ["body","finding","reference","testCase","emptyFindings","emptyCases"])
