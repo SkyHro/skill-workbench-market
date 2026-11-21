@@ -13,6 +13,7 @@ const dir = ".market-state";
 const config = path.join(dir,"state.json");
 const json = async file => JSON.parse(await readFile(file, "utf8"));
 const state = existsSync(config) ? await json(config) : {client:"0.1.0", withdrawn:[]};
+state.withdrawnClients ??= [];
 const action = process.env.OPERATION || "verify";
 const version = process.env.CLIENT_VERSION || "";
 const plugin = process.env.PLUGIN_FILE || "";
@@ -60,9 +61,10 @@ async function prepare() {
   validateInputs();
   if (publishClient) await validateClient(version,false);
   if (withdrawClient) {
-    assert.ok(state.client === version || state.client === null, "请填写当前分发的客户端版本");
+    assert.ok(state.client === version || (state.client === null && state.withdrawnClients.includes(version)), "请填写当前分发的客户端版本");
     gh(["release","view","client-v"+version,"--json","tagName"]);
     state.client = null;
+    if (!state.withdrawnClients.includes(version)) state.withdrawnClients.push(version);
   }
   if (publishPlugin || withdrawPlugin) {
     const managed = path.join(dir,"packages",plugin);
@@ -85,7 +87,10 @@ async function prepare() {
     state.withdrawn = state.withdrawn.filter(f => f !== plugin);
     if (withdrawPlugin) state.withdrawn.push(plugin);
   }
-  if (publishClient) state.client = version;
+  if (publishClient) {
+    state.client = version;
+    state.withdrawnClients = state.withdrawnClients.filter(v => v !== version);
+  }
   if (action !== "verify") {
     await mkdir(dir,{recursive:true});
     await writeFile(config,JSON.stringify(state,null,2)+"\n");
@@ -128,7 +133,10 @@ async function verify() {
     assert.equal(res.status,404,"已撤回插件仍可下载："+name);
   }
   if (state.client) await validateClient(state.client,true);
-  if (withdrawClient) assert.equal(JSON.parse(gh(["release","view","client-v"+version,"--json","isDraft"])).isDraft,true);
+  for (const v of state.withdrawnClients) {
+    const release = JSON.parse(gh(["release","view","client-v"+v,"--json","isDraft"]));
+    assert.equal(release.isDraft,true,"已撤回的客户端仍公开："+v);
+  }
   await log("公网首页、目录、下载包及撤回状态验证通过");
 }
 switch(process.argv[2]) {
